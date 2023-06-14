@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/cleverextechnology/crud2/config"
-	"github.com/cleverextechnology/crud2/model"
+	"github.com/RajendraPetkar2688/crud2/config"
+	"github.com/RajendraPetkar2688/crud2/model"
 )
 
 // AllEmployee = Select Employee API

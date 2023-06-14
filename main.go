@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/cleverextechnology/crud2/controller"
+	"github.com/RajendraPetkar2688/crud2/controller"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
