@@ -1,4 +1,4 @@
-module CRUD2
+module github.com/RajendraPetkar2688/crud2
 
 go 1.19
 
