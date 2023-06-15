@@ -43,6 +43,44 @@ func AllEmployee(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// UpdateEmployee = Update Employee API
+func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
+	var response model.Response
+	db := config.Connect()
+	defer db.Close()
+
+	err := r.ParseMultipartForm(4096)
+	if err != nil {
+		panic(err)
+	}
+	id := r.FormValue("id")
+	name := r.FormValue("name")
+	city := r.FormValue("city")
+	mobile := r.FormValue("mobile")
+
+	if name != "" && city == "" {
+		_, err = db.Exec("UPDATE employee SET name=? WHERE id=?", name, id)
+	} else if city != "" && name == "" {
+		_, err = db.Exec("UPDATE employee SET city=? WHERE id=?", city, id)
+	} else if name == "" && mobile == "" {
+		_, err = db.Exec("UPDATE employee SET name=?, mobile=? WHERE id=? ", name, mobile, id)
+	} else {
+		_, err = db.Exec("UPDATE employee SET name=?, city=?, mobile=? WHERE id=? ", name, city, mobile, id)
+	}
+
+	if err != nil {
+		log.Print(err)
+	}
+
+	response.Status = 200
+	response.Message = "Record updated successfully"
+	fmt.Print("Record updated successfully")
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+
+}
+
 // InsertEmployee = Insert Employee API
 func InsertEmployee(w http.ResponseWriter, r *http.Request) {
 	var response model.Response
@@ -72,5 +110,31 @@ func InsertEmployee(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "multipart/form-data")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(response)
+}
+
+// DeleteEmployee = Delete Employee API
+func DeleteEmployee(w http.ResponseWriter, r *http.Request) {
+	var response model.Response
+	db := config.Connect()
+	defer db.Close()
+
+	err := r.ParseMultipartForm(4096)
+	if err != nil {
+		panic(err)
+	}
+	id := r.FormValue("id")
+
+	_, err = db.Exec("DELETE  from employee where id=? ", id)
+
+	if err != nil {
+		log.Print(err)
+	}
+
+	response.Status = 200
+	response.Message = " Record deleted successfully"
+	fmt.Print("Record deleted successfully")
+
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
